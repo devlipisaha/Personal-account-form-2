@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Fulfil Bank – Open a Personal Bank Account</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'Inter', sans-serif; background: #F0F2F5; min-height: 100vh; }
+
+/* TOP BAR */
+.topbar {
+  background: #0D1B35;
+  padding: 9px 40px;
+  display: flex; align-items: center; gap: 28px;
+}
+.topbar span {
+  display: flex; align-items: center; gap: 7px;
+  font-size: 13px; color: #C8D6E5;
+}
+.topbar span svg { color: #D4A017; }
+
+/* NAVBAR */
+.navbar {
+  background: #091525;
+  padding: 0 40px;
+  display: flex; align-items: center; justify-content: space-between;
+  height: 70px;
+  border-bottom: 3px solid #D4A017;
+}
+.logo { display: flex; align-items: center; gap: 11px; }
+.logo-box {
+  width: 42px; height: 42px;
+  background: #D4A017;
+  border-radius: 9px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 21px; font-weight: 800; color: #091525;
+}
+.logo-text { font-size: 20px; font-weight: 800; color: #FFF; }
+.logo-text em { color: #D4A017; font-style: normal; }
+nav { display: flex; gap: 2px; }
+nav a {
+  color: #8FA3B8; text-decoration: none;
+  font-size: 13.5px; font-weight: 500;
+  padding: 8px 13px; border-radius: 6px;
+  transition: all .15s;
+}
+nav a:hover { color: #FFF; background: rgba(212,160,23,0.1); }
+nav a.active { color: #D4A017; font-weight: 700; }
+
+/* BANNER */
+.banner {
+  background: #091525;
+  text-align: center; padding: 40px 24px 46px;
+}
+.banner h1 { font-size: 34px; font-weight: 800; color: #FFF; letter-spacing: -.5px; margin-bottom: 8px; }
+.banner h1 em { color: #D4A017; font-style: normal; }
+.banner p { font-size: 15px; color: #8FA3B8; }
+
+/* WRAPPER */
+.wrap { max-width: 980px; margin: 0 auto; padding: 36px 24px 70px; }
+
+/* STEP TABS */
+.tabs {
+  display: flex; align-items: stretch;
+  background: #FFF;
+  border-radius: 10px 10px 0 0;
+  border: 1px solid #DDE3EA; border-bottom: none;
+  overflow-x: auto; scrollbar-width: none;
+}
+.tabs::-webkit-scrollbar { display: none; }
+.tab {
+  display: flex; align-items: center; gap: 8px;
+  padding: 15px 17px;
+  font-size: 13px; font-weight: 500; color: #94A3B8;
+  flex-shrink: 0; border-right: 1px solid #DDE3EA;
+  cursor: pointer; white-space: nowrap;
+  border-bottom: 3px solid transparent;
+  transition: all .15s;
+}
+.tab:last-child { border-right: none; }
+.tab.active {
+  color: #D4A017; font-weight: 700;
+  background: #FFFCF0;
+  border-bottom: 3px solid #D4A017;
+}
+.tab.done { color: #1B3F7A; border-bottom: 3px solid #1B3F7A; }
+.tab-n {
+  width: 24px; height: 24px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 11px; font-weight: 700; flex-shrink: 0;
+}
+.tab.active .tab-n { background: #D4A017; color: #FFF; }
+.tab.done   .tab-n { background: #1B3F7A; color: #FFF; }
+.tab.todo   .tab-n { background: #EEF2F7; color: #94A3B8; }
+
+/* PROGRESS */
+.prog-row {
+  background: #FFF;
+  border-left: 1px solid #DDE3EA; border-right: 1px solid #DDE3EA;
+  padding: 11px 24px;
+  display: flex; align-items: center; gap: 14px;
+}
+.prog-lbl { font-size: 13px; font-weight: 700; color: #D4A017; white-space: nowrap; }
+.prog-bar { flex: 1; height: 7px; background: #E8ECF2; border-radius: 99px; overflow: hidden; }
+.prog-fill { height: 100%; width: 12%; background: linear-gradient(90deg,#D4A017,#F5C842); border-radius: 99px; }
+.prog-pct { font-size: 13px; color: #64748B; white-space: nowrap; }
+
+/* FORM CARD */
+.card {
+  background: #FFF;
+  border: 1px solid #DDE3EA; border-top: none;
+  border-radius: 0 0 10px 10px;
+  padding: 38px 34px 34px;
+  box-shadow: 0 6px 24px rgba(0,0,0,.07);
+}
+.card h2 { font-size: 22px; font-weight: 800; color: #0F1C2E; margin-bottom: 6px; }
+.card .sub { font-size: 14px; color: #64748B; margin-bottom: 28px; }
+.div { border: none; border-top: 1px solid #EEF2F7; margin: 26px 0; }
+
+/* ACCOUNT CARDS */
+.acc-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 16px; }
+.acc {
+  border: 2px solid #DDE3EA; border-radius: 10px;
+  padding: 22px 20px; cursor: pointer;
+  background: #FAFBFC; transition: all .2s;
+}
+.acc:hover { border-color: #D4A017; background: #FFFDF5; box-shadow: 0 0 0 4px rgba(212,160,23,.08); }
+.acc.sel   { border-color: #D4A017; background: #FFFDF5; box-shadow: 0 0 0 4px rgba(212,160,23,.13); }
+
+.rrow { display: flex; align-items: flex-start; gap: 13px; }
+.rdot {
+  width: 21px; height: 21px; border-radius: 50%;
+  border: 2px solid #CBD5E1;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0; margin-top: 2px; transition: border-color .2s;
+}
+.acc.sel .rdot { border-color: #D4A017; }
+.rfill { width: 11px; height: 11px; border-radius: 50%; background: #D4A017; display: none; }
+.acc.sel .rfill { display: block; }
+
+.ainfo h3 { font-size: 15px; font-weight: 700; color: #0F1C2E; margin-bottom: 7px; }
+.ainfo p  { font-size: 13px; color: #64748B; line-height: 1.55; }
+.ainfo .note { font-style: italic; color: #D4A017; font-size: 12.5px; margin-top: 5px; font-weight: 600; }
+.ichip {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 15px; height: 15px; border-radius: 50%;
+  background: #E8ECF2; color: #64748B;
+  font-size: 10px; font-weight: 800; cursor: help; vertical-align: middle; margin-left: 3px;
+}
+
+/* FOOTER */
+.footer { display: flex; align-items: center; justify-content: flex-end; gap: 22px; margin-top: 34px; }
+.btn-ghost {
+  background: none; border: none;
+  color: #D4A017; font-size: 14px; font-weight: 600;
+  font-family: 'Inter', sans-serif; cursor: pointer;
+  text-decoration: underline; text-underline-offset: 3px;
+  transition: color .2s;
+}
+.btn-ghost:hover { color: #B38600; }
+.btn-next {
+  background: #D4A017; color: #FFF;
+  border: none; border-radius: 9px;
+  padding: 14px 30px; font-size: 15px; font-weight: 700;
+  font-family: 'Inter', sans-serif; cursor: pointer;
+  display: flex; align-items: center; gap: 9px;
+  box-shadow: 0 4px 18px rgba(212,160,23,.45);
+  transition: background .2s, box-shadow .2s, transform .15s;
+}
+.btn-next:hover { background: #B38600; box-shadow: 0 6px 24px rgba(212,160,23,.55); transform: translateY(-1px); }
+.btn-next svg { width: 16px; height: 16px; }
+
+.sec { display: flex; align-items: center; gap: 7px; margin-top: 20px; font-size: 12px; color: #94A3B8; }
+.sec svg { color: #D4A017; }
+
+@media(max-width:700px){
+  .navbar{padding:0 16px;} nav{display:none;}
+  .banner{padding:28px 16px;} .banner h1{font-size:24px;}
+  .card{padding:24px 16px;} .acc-grid{grid-template-columns:1fr;}
+  .wrap{padding:20px 14px 50px;}
+}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <span>
+    <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.8 19.8 0 01-8.63-3.07A19.5 19.5 0 013.07 9.81 19.8 19.8 0 01.21 1.21 2 2 0 012.2 0h3a2 2 0 012 1.72 12.6 12.6 0 00.68 2.73 2 2 0 01-.45 2.11L6.09 7.91a16 16 0 006 6l1.35-1.35a2 2 0 012.11-.45 12.6 12.6 0 002.73.68A2 2 0 0122 14.92z"/></svg>
+    +44 20 8895 6493
+  </span>
+  <span>
+    <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+    Diplomatic Jurisdiction – Foreign Trade Mission Office (ETMO)
+  </span>
+</div>
+
+<div class="navbar">
+  <div class="logo">
+    <div class="logo-box">F</div>
+    <span class="logo-text">Fulfil<em>Bank</em></span>
+  </div>
+  <nav>
+    <a href="#">Home</a>
+    <a href="#">About Us</a>
+    <a href="#">Fee</a>
+    <a href="#" class="active">Open Account</a>
+    <a href="#">KTT Account</a>
+    <a href="#">Services</a>
+    <a href="#">Documents Verification</a>
+    <a href="#">Contact Us</a>
+  </nav>
+</div>
+
+<div class="banner">
+  <h1>Open a Personal <em>Bank Account</em></h1>
+  <p>Complete the steps below to apply for your new account — fully online and secure.</p>
+</div>
+
+<div class="wrap">
+
+  <div class="tabs">
+    <div class="tab active"><div class="tab-n">1</div>Account Type</div>
+    <div class="tab todo"><div class="tab-n">2</div>Personal Details</div>
+    <div class="tab todo"><div class="tab-n">3</div>Address &amp; Contact</div>
+    <div class="tab todo"><div class="tab-n">4</div>Transaction Profile</div>
+    <div class="tab todo"><div class="tab-n">5</div>Source of Funds</div>
+    <div class="tab todo"><div class="tab-n">6</div>KYC Uploads</div>
+    <div class="tab todo"><div class="tab-n">7</div>Review &amp; Submit</div>
+  </div>
+
+  <div class="prog-row">
+    <span class="prog-lbl">Step 1 of 7</span>
+    <div class="prog-bar"><div class="prog-fill"></div></div>
+    <span class="prog-pct">12% Complete</span>
+  </div>
+
+  <div class="card">
+    <h2>Select Account Type</h2>
+    <p class="sub">Please choose the type of account you wish to open.</p>
+    <div class="div"></div>
+
+    <div class="acc-grid">
+
+      <div class="acc sel" onclick="pick(this)">
+        <div class="rrow">
+          <div class="rdot"><div class="rfill"></div></div>
+          <div class="ainfo">
+            <h3>Standard Account</h3>
+            <p>Regular personal bank account.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="acc" onclick="pick(this)">
+        <div class="rrow">
+          <div class="rdot"><div class="rfill"></div></div>
+          <div class="ainfo">
+            <h3>Numbered Account</h3>
+            <p>Anonymous, coded account (£50,000 fee) <span class="ichip" title="Your name is replaced by a unique account number for maximum privacy.">i</span></p>
+            <p class="note">A higher level of privacy.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="acc" onclick="pick(this)">
+        <div class="rrow">
+          <div class="rdot"><div class="rfill"></div></div>
+          <div class="ainfo">
+            <h3>Joint Account</h3>
+            <p>Account shared with another person.</p>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="div"></div>
+    <div class="footer">
+      <button class="btn-ghost">Save &amp; Continue Later</button>
+      <button class="btn-next">
+        Next: Personal Details
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+      </button>
+    </div>
+    <div class="sec">
+      <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>
+      256-bit SSL encrypted — your information is fully protected.
+    </div>
+  </div>
+
+</div>
+<script>
+function pick(el){document.querySelectorAll('.acc').forEach(c=>c.classList.remove('sel'));el.classList.add('sel');}
+</script>
+</body>
+</html>
